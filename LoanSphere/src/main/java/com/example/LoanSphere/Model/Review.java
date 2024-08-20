@@ -8,5 +8,5 @@ import java.util.List;
 public class Review {
 private CommonResponse commonResponse;
 
-    private List<LoanAppliactionReview> loanAppliactionReviewList;
+    private List<ApplicationReview> loanAppliactionReviewList;
 }

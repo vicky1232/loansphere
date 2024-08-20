@@ -3,16 +3,15 @@ package com.example.LoanSphere.Model;
 import lombok.Data;
 
 import java.sql.Date;
-import java.util.List;
 
 @Data
-public class LoanAppliactionReview {
+public class ApplicationReview {
 
     private Long applicationNo;
     private String fullName;
     private Date dateOfBirth;
-    private String aadhaarNo;
     private String maritalStatus;
+    private String aadhaarNo;
     private String email;
     private String mobileNo;
     private String address;

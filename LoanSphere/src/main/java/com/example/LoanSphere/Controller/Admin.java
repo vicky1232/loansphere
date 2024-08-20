@@ -1,7 +1,7 @@
 package com.example.LoanSphere.Controller;
 
 
-import com.example.LoanSphere.Repository.LoanApplicationDetailsRepo;
+import com.example.LoanSphere.Repository.LoanApplicationRepo;
 import com.example.LoanSphere.Services.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +15,7 @@ public class Admin {
     private Service service;
 
     @Autowired
-    private LoanApplicationDetailsRepo loanApplicationDetailsRepo;
+    private LoanApplicationRepo loanApplicationDetailsRepo;
 
     @PostMapping("/message")
     public ResponseEntity<String> postMessage() {

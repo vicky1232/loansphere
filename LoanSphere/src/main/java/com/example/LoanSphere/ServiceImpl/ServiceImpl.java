@@ -1,36 +1,34 @@
 package com.example.LoanSphere.ServiceImpl;
-import com.example.LoanSphere.Entity.LoanApplicationDetails;
+import com.example.LoanSphere.Entity.LoanApplication;
 import com.example.LoanSphere.Model.CommonResponse;
-import com.example.LoanSphere.Model.LoanAppliactionReview;
+import com.example.LoanSphere.Model.ApplicationReview;
 import com.example.LoanSphere.Model.Review;
-import com.example.LoanSphere.Repository.LoanApplicationDetailsRepo;
-import com.example.LoanSphere.Repository.UserDetailRepo;
+import com.example.LoanSphere.Repository.LoanApplicationRepo;
 import com.example.LoanSphere.Services.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @org.springframework.stereotype.Service
 public class ServiceImpl implements Service {
 
 
     @Autowired
-    private LoanApplicationDetailsRepo loanApplicationDetailsRepo;
+    private LoanApplicationRepo loanApplicationRepo;
 
     @Override
     public Review reviewLoanApplications() {
-        List<LoanAppliactionReview> loanAppliactionReviews = new ArrayList<>();
+        List<ApplicationReview> loanAppliactionReviews = new ArrayList<>();
         Review review = new Review();
         CommonResponse commonResponse = new CommonResponse();
         try {
-            List<LoanApplicationDetails> loanApplication = loanApplicationDetailsRepo.findAll();
+            List<LoanApplication> loanApplication =loanApplicationRepo.findAll();
             if (!loanApplication.isEmpty()){
-                for (LoanApplicationDetails application :loanApplication){
-                    LoanAppliactionReview loanAppliactionReview = new LoanAppliactionReview();
-                    loanAppliactionReview.setApplicationNo(application.getApplicationId());
+                for (LoanApplication application :loanApplication){
+                    ApplicationReview loanAppliactionReview = new ApplicationReview();
+                    loanAppliactionReview.setApplicationNo(application.getId());
                     loanAppliactionReview.setFullName(application.getFullName());
                     loanAppliactionReview.setAddress(application.getAddress());
                     loanAppliactionReview.setEmail(application.getEmail());
@@ -65,9 +63,9 @@ public class ServiceImpl implements Service {
     public CommonResponse updateApplicationStatus(Long applicationNo, String status) {
         CommonResponse commonResponse = new CommonResponse();
         try {
-            LoanApplicationDetails loanApplicationDetails = loanApplicationDetailsRepo.findByAppliactionNo(applicationNo);
-            if (loanApplicationDetails != null){
-                loanApplicationDetailsRepo.updateStatus(applicationNo, status);
+            LoanApplication loanApplication = loanApplicationRepo.findByAppliactionNo(applicationNo);
+            if (loanApplication != null){
+                loanApplicationRepo.updateStatus(applicationNo, status);
                 commonResponse.setCode("0000");
                 commonResponse.setMsg("Application approved successfully");
             }else {

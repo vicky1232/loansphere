@@ -32,7 +32,7 @@ public class User implements org.springframework.security.core.userdetails.UserD
     private Role roleMaster;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<LoanApplicationDetails> loanApplications;
+    private List<LoanApplication> loanApplications;
 
 
     @Override

@@ -1,7 +1,6 @@
 package com.example.LoanSphere.Services;
 
 
-import com.example.LoanSphere.Entity.LoanApplicationDetails;
 import com.example.LoanSphere.Model.CommonResponse;
 import com.example.LoanSphere.Model.Review;
 
