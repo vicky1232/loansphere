@@ -1,6 +1,6 @@
 package com.example.LoanSphere.ServiceImpl;
 
-import com.example.LoanSphere.Model.LoanApplication;
+import com.example.LoanSphere.Entity.LoanApplication;
 import com.example.LoanSphere.Repository.LoanApplicationRepository;
 import com.example.LoanSphere.Services.LoanApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;

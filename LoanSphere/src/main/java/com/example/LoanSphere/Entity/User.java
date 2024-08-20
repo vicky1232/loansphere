@@ -1,6 +1,5 @@
 package com.example.LoanSphere.Entity;
 
-import com.example.LoanSphere.Model.LoanApplication;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;

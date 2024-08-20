@@ -1,6 +1,4 @@
-package com.example.LoanSphere.Model;
-
-import com.example.LoanSphere.Entity.User;
+package com.example.LoanSphere.Entity;
 
 import jakarta.persistence.*;
 import lombok.Data;

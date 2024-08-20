@@ -1,7 +1,7 @@
 package com.example.LoanSphere.Repository;
 
 
-import com.example.LoanSphere.Model.LoanApplication;
+import com.example.LoanSphere.Entity.LoanApplication;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

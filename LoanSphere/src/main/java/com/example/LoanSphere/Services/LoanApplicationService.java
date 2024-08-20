@@ -1,6 +1,6 @@
 package com.example.LoanSphere.Services;
 
-import com.example.LoanSphere.Model.LoanApplication;
+import com.example.LoanSphere.Entity.LoanApplication;
 
 import java.util.List;
 
