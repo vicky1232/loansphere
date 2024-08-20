@@ -35,7 +35,7 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
 
-    @OneToMany(mappedBy = "user_id")
+    @OneToMany(mappedBy = "user")
     private Set<LoanApplication> loanApplications;
 
     @OneToOne(mappedBy = "userMaster", cascade = CascadeType.ALL)
