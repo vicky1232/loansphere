@@ -1,5 +1,6 @@
 package com.example.LoanSphere.Entity;
 
+import com.example.LoanSphere.Model.LoanApplication;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
@@ -8,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Set;
 
 @Table(name="user")
 @Entity
@@ -33,7 +35,8 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
 
-
+    @OneToMany(mappedBy = "user_id")
+    private Set<LoanApplication> loanApplications;
 
     @OneToOne(mappedBy = "userMaster", cascade = CascadeType.ALL)
     private Role roleMaster;
