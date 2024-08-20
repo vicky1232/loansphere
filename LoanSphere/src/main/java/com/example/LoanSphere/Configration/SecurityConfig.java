@@ -35,7 +35,7 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable())
                 .authorizeRequests().
                 requestMatchers("/admin/**").hasRole("ADMIN").requestMatchers("/user/**").hasAnyRole("USER","ADMIN")
-                .requestMatchers("/loansphere-service/login").permitAll()
+                .requestMatchers("/loansphere-service/**").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and().exceptionHandling(ex -> ex.authenticationEntryPoint(point))

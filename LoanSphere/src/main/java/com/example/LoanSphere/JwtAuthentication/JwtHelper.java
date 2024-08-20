@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.function.Function;
 @Component
 public class JwtHelper {
@@ -66,5 +67,28 @@ public class JwtHelper {
     public Boolean validateToken(String token, UserDetails userDetails) {
         final String username = getUsernameFromToken(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    }
+
+    public String generateTOTP(String username) {
+        // Here you would use a more secure method to generate TOTP, possibly using an external library.
+        Random random = new Random();
+        int totp = 100000 + random.nextInt(900000);
+        // Save the TOTP associated with the user (e.g., in a database or cache)
+        saveTOTPForUser(username, totp);
+        return String.valueOf(totp);
+    }
+
+    public boolean validateTOTP(String username, String inputCode) {
+        int savedTOTP = retrieveTOTPForUser(username); // Fetch the saved TOTP from storage
+        return savedTOTP == Integer.parseInt(inputCode);
+    }
+
+    private void saveTOTPForUser(String username, int totp) {
+        // Logic to save TOTP associated with the username (e.g., in a database or cache)
+    }
+
+    private int retrieveTOTPForUser(String username) {
+        // Logic to retrieve the saved TOTP for the username
+        return 123456; // Example return value, replace with actual retrieval logic
     }
 }
