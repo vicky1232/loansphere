@@ -2,6 +2,8 @@ package com.example.LoanSphere.Controller;
 import com.example.LoanSphere.JwtAuthentication.JwtHelper;
 import com.example.LoanSphere.Model.JwtRequest;
 import com.example.LoanSphere.Model.JwtResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +27,8 @@ public class LoanSphereLogin {
 
     @Autowired
     private JwtHelper helper;
+
+    private Logger logger = LoggerFactory.getLogger(LoanSphereLogin.class);
 
 
     @PostMapping("/login")

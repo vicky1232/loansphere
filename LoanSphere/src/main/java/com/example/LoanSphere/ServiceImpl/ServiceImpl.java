@@ -45,7 +45,7 @@ public class ServiceImpl implements Service {
                     loanAppliactionReviews.add(loanAppliactionReview);
                 }
                 commonResponse.setCode("0000");
-                commonResponse.setMsg("Applications found ");
+                commonResponse.setMsg("Applications found  Suceessfully");
             }else {
                 commonResponse.setCode("1111");
                 commonResponse.setMsg("Applications not found");
@@ -67,7 +67,7 @@ public class ServiceImpl implements Service {
             if (loanApplication != null){
                 loanApplicationRepo.updateStatus(applicationNo, status);
                 commonResponse.setCode("0000");
-                commonResponse.setMsg("Application approved successfully");
+                commonResponse.setMsg("Application status update  successfully");
             }else {
                 commonResponse.setCode("1111");
                 commonResponse.setCode("Application not found ");
