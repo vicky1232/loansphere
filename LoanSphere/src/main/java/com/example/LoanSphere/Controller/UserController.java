@@ -1,6 +1,7 @@
 package com.example.LoanSphere.Controller;
 
-import com.example.LoanSphere.Entity.User;
+
+import com.example.LoanSphere.Model.UserDetails;
 import com.example.LoanSphere.Services.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,9 +23,9 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@RequestBody User user) {
+    public ResponseEntity<?> registerUser(@RequestBody UserDetails user) {
         try {
-            User registeredUser = service.registerNewUser(user);
+            UserDetails registeredUser = service.registerNewUser(user);
             return new ResponseEntity<>(registeredUser, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
@@ -32,7 +33,7 @@ public class UserController {
     }
 
     @PostMapping("/loginUser")
-    public ResponseEntity<?> login(@RequestParam String username, @RequestParam String password) throws Exception {
+    public ResponseEntity<?> login(@RequestParam String username, @RequestParam String password) {
         try {
             String loginDetails = service.loginUser(username, password);
             return new ResponseEntity<>(loginDetails, HttpStatus.OK);
@@ -42,10 +43,10 @@ public class UserController {
     }
 
     @PostMapping("/verify-OTP")
-    public ResponseEntity<?> verifyOtp(@RequestParam String username, @RequestParam String otp){
+    public ResponseEntity<?> verifyOtp(@RequestParam String username, @RequestParam String otp) {
         try {
-            boolean isVerified = service.verifyOtp(username,otp);
-            if(isVerified){
+            boolean isVerified = service.verifyOtp(username, otp);
+            if (isVerified) {
                 return new ResponseEntity<>("OTP verified", HttpStatus.OK);
             } else {
                 return new ResponseEntity<>("Invalid OTP", HttpStatus.BAD_REQUEST);
@@ -56,12 +57,12 @@ public class UserController {
     }
 
     @PutMapping("/updating-USER")
-    public ResponseEntity<?> updateUser(@RequestParam String username,@RequestParam User updatedUser){
-         try {
-             User user = service.updateUser(username,updatedUser);
-             return new ResponseEntity<>(user, HttpStatus.OK);
-         } catch (Exception e){
-             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-         }
+    public ResponseEntity<?> updateUser(@RequestParam String username, @RequestBody UserDetails updatedUser) {
+        try {
+            UserDetails user = service.updateUser(username, updatedUser);
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 }

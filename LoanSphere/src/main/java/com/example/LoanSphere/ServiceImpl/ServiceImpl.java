@@ -1,6 +1,7 @@
 package com.example.LoanSphere.ServiceImpl;
 import com.example.LoanSphere.Entity.Role;
 import com.example.LoanSphere.Entity.User;
+import com.example.LoanSphere.Model.UserDetails;
 import com.example.LoanSphere.Repository.RoleRepository;
 import com.example.LoanSphere.Repository.UserDetailRepo;
 import com.example.LoanSphere.Services.Service;
@@ -26,46 +27,51 @@ public class ServiceImpl implements Service {
     private OtpService otpService;
 
     @Override
-    public User registerNewUser(User user) throws Exception {
-        // Check if username or email is already taken
-        if (userDetailRepo.findByUsername(user.getUsername()).isPresent()) {
+    public UserDetails registerNewUser(UserDetails userDetails) throws Exception {
+        if (userDetailRepo.findByUsername(userDetails.getUsername()).isPresent()) {
             throw new Exception("Username is already taken!");
         }
-        if (userDetailRepo.findByEmailId(user.getEmailId()).isPresent()) {
+        if (userDetailRepo.findByEmailId(userDetails.getEmailId()).isPresent()) {
             throw new Exception("Email is already registered!");
         }
 
-        // Encode the password before saving the user
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        // Convert UserDetails to User entity
+        User user = new User();
+        user.setFirstname(userDetails.getFirstname());
+        user.setLastName(userDetails.getLastName());
+        user.setEmailId(userDetails.getEmailId());
+        user.setMobileNo(userDetails.getMobileNo());
+        user.setPassword(passwordEncoder.encode(userDetails.getPassword()));
+        user.setUsername(userDetails.getUsername());
 
         // Assign role to user
-        Role userRole = roleRepository.findByRole("ROLE_USER")
-                .orElseThrow(() -> new Exception("Role not found."));
-
-        // Set the user in the role and vice versa
+        Role userRole = new Role();
+        userRole.setRole("ROLE_USER");
         userRole.setUserMaster(user);
-        user.setRoleMaster(userRole);
 
-        // Save the user (this will also save the role due to CascadeType.ALL)
-        return userDetailRepo.save(user);
+        //set the role to the user
+        user.setRoleMaster(userRole);
+        userRole.setUserMaster(user);
+
+        // Save the user
+        userDetailRepo.save(user);
+
+        // Convert back to UserDetails for response
+        userDetails.setRole(userRole.getRole());
+        return userDetails;
     }
 
     @Override
     public String loginUser(String username, String password) throws Exception {
         User user = userDetailRepo.findByUsername(username)
                 .orElseThrow(() -> new Exception("User not found"));
-
         if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new Exception("Invalid password");
         }
 
-        //String userEmailId = String.valueOf(userDetailRepo.findByUsername3(username));
-        // Generate OTP and send it (email/SMS service)
+        // Generate OTP and send it
         String generatedOtp = otpService.generateAndSendOtp(user);
         userDetailRepo.save(user);
-
-        // Here, you would send the OTP to the user via email/SMS
-        // emailService.sendOtp(user.getEmailId(), generatedOtp);
 
         return generatedOtp;
     }
@@ -74,58 +80,49 @@ public class ServiceImpl implements Service {
     public boolean verifyOtp(String username, String otp) throws Exception {
         User user = userDetailRepo.findByUsername(username)
                 .orElseThrow(() -> new Exception("User not found"));
-
         if (user.getOtp().equals(otp) && user.getOtpExpiry().isAfter(LocalDateTime.now())) {
-            // OTP is correct and has not expired
             return true;
         }
         return false;
     }
 
     @Override
-    public User updateUser(String username,User updatedUser) throws Exception {
-        // Fetch the existing user from the database
+    public UserDetails updateUser(String username, UserDetails updatedUser) throws Exception {
         User existingUser = userDetailRepo.findByUsername(username)
                 .orElseThrow(() -> new Exception("User not found"));
 
-        // Update user details with the values from updatedUser if they are not null
         if (updatedUser.getFirstname() != null && !updatedUser.getFirstname().isEmpty()) {
             existingUser.setFirstname(updatedUser.getFirstname());
         }
-
         if (updatedUser.getLastName() != null && !updatedUser.getLastName().isEmpty()) {
             existingUser.setLastName(updatedUser.getLastName());
         }
-
         if (updatedUser.getEmailId() != null && !updatedUser.getEmailId().isEmpty()) {
             if (!updatedUser.getEmailId().equals(existingUser.getEmailId())) {
-                // Check if the new email is already taken by another user
                 if (userDetailRepo.findByEmailId(updatedUser.getEmailId()).isPresent()) {
                     throw new Exception("Email is already registered!");
                 }
                 existingUser.setEmailId(updatedUser.getEmailId());
             }
         }
-
         if (updatedUser.getMobileNo() != null && !updatedUser.getMobileNo().isEmpty()) {
             existingUser.setMobileNo(updatedUser.getMobileNo());
         }
-
         if (updatedUser.getPassword() != null && !updatedUser.getPassword().isEmpty()) {
-            // Encode the new password before updating it
             existingUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
         }
 
-        // Check if there's a need to update the user's role
-        if (updatedUser.getRoleMaster() != null && updatedUser.getRoleMaster().getRole() != null) {
-            Role updatedRole = roleRepository.findByRole(updatedUser.getRoleMaster().getRole())
-                    .orElseThrow(() -> new Exception("Role not found"));
+        if (updatedUser.getRole() != null) {
+            Role updatedRole = new Role();
+            updatedRole.setRole("ROLE_USER");
+//            updatedRole.setUserMaster(updatedUser);
             existingUser.setRoleMaster(updatedRole);
-            updatedRole.setUserMaster(existingUser);  // Set the user reference in the role entity
+            updatedRole.setUserMaster(existingUser);
         }
 
-        // Save the updated user details
-        return userDetailRepo.save(existingUser);
-    }
+        userDetailRepo.save(existingUser);
 
+        updatedUser.setRole(existingUser.getRoleMaster().getRole());
+        return updatedUser;
+    }
 }
