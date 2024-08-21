@@ -4,15 +4,15 @@ import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 @Table(name="user")
 @Entity
 @Data
-public class User implements UserDetails {
+public class User implements org.springframework.security.core.userdetails.UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
@@ -28,10 +28,12 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
 
-
-
     @OneToOne(mappedBy = "userMaster", cascade = CascadeType.ALL)
     private Role roleMaster;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<LoanApplication> loanApplications;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
