@@ -6,6 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -27,7 +28,12 @@ public class User implements UserDetails {
     private String mobileNo;
     @Column(name = "password")
     private String password;
-
+    @Column(name = "user_name")
+    private String username;
+    @Column(name = "otp")
+    private String otp;
+    @Column(name = "otp_Expiry")
+    private LocalDateTime otpExpiry;
 
 
     @OneToOne(mappedBy = "userMaster", cascade = CascadeType.ALL)
