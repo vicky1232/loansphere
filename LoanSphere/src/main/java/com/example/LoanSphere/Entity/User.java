@@ -1,5 +1,6 @@
 package com.example.LoanSphere.Entity;
 
+//import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
@@ -18,24 +19,17 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long userId;
-
     @Column(name="first_name")
-    private String firstName;
-
+    private String firstname;
     @Column(name = "last_name")
     private String lastName;
-
     @Column(name = "email_id")
     private String emailId;
-
     @Column(name = "mobile_no")
     private String mobileNo;
-
     @Column(name = "password")
     private String password;
 
-    @OneToMany(mappedBy = "user")
-    private Set<LoanApplication> loanApplications;
 
     @OneToOne(mappedBy = "userMaster", cascade = CascadeType.ALL)
     private Role roleMaster;
