@@ -2,6 +2,7 @@ package com.example.LoanSphere.Controller;
 import com.example.LoanSphere.JwtAuthentication.JwtHelper;
 import com.example.LoanSphere.Model.JwtRequest;
 import com.example.LoanSphere.Model.JwtResponse;
+import com.example.LoanSphere.Services.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,9 @@ public class LoanSphereLogin {
 
     @Autowired
     private AuthenticationManager manager;
+
+    @Autowired
+    private Service service;
 
 
     @Autowired
@@ -59,6 +63,16 @@ public class LoanSphereLogin {
     @ExceptionHandler(BadCredentialsException.class)
     public String exceptionHandler() {
         return "Credentials Invalid !!";
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<?> registerUser(@RequestBody com.example.LoanSphere.Model.UserDetails user) {
+        try {
+            com.example.LoanSphere.Model.UserDetails registeredUser = service.registerNewUser(user);
+            return new ResponseEntity<>(registeredUser, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
 }

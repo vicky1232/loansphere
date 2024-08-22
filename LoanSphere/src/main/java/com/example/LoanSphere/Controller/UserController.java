@@ -22,15 +22,6 @@ public class UserController {
         return ResponseEntity.ok("Message received by user successfully!");
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@RequestBody UserDetails user) {
-        try {
-            UserDetails registeredUser = service.registerNewUser(user);
-            return new ResponseEntity<>(registeredUser, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
-    }
 
     @PostMapping("/loginUser")
     public ResponseEntity<?> login(@RequestParam String username, @RequestParam String password) {

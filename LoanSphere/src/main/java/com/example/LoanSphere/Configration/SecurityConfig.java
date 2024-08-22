@@ -33,8 +33,9 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http.csrf(csrf -> csrf.disable())
-                .authorizeRequests().
-                requestMatchers("/admin/**").hasRole("ADMIN").requestMatchers("/user/**").hasAnyRole("USER","ADMIN")
+                .authorizeRequests()
+                .requestMatchers("/loansphere-service/register").permitAll()
+                .requestMatchers("/admin/**").hasRole("ADMIN").requestMatchers("/user/**").hasAnyRole("USER","ADMIN")
                 .requestMatchers("/loansphere-service/login").permitAll()
                 .anyRequest()
                 .authenticated()
